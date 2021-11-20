@@ -42,6 +42,7 @@ def return_mod_list_from_file():
     with open("mod_list.txt", "r") as file:
         lines = file.readlines()
         lines = list(filter(lambda x: (x[0] != "#") and (x[0] not in string.whitespace), lines))
+        lines = [line.strip() for line in lines]
         return lines
 
 def download_mod_from_steam_workshop(swd_filename, link_or_code_to_mod):
@@ -52,8 +53,12 @@ def download_mod_from_steam_workshop(swd_filename, link_or_code_to_mod):
     else:
         print("FAILED TO PARSE: {}".format(link_or_code_to_mod))
         return
-    subprocess.call(["pwd"])
-    subprocess.call([os.path.join("..", "resources", swd_filename), link_or_code_to_mod])
+    # subprocess.call(["pwd"])
+    for x in range(5):
+        result_code = subprocess.call([os.path.join("..", "resources", swd_filename), link_or_code_to_mod])
+        if result_code == 0:
+            return
+        print("The download has failed. Retrying again for the {}")
 
 def get_mod_full_name(steam_mod_id):
     steam_mod_url = "https://steamcommunity.com/sharedfiles/filedetails/?id={}".format(steam_mod_id)
@@ -85,6 +90,7 @@ def main():
     mod_folder_name = create_mod_folder()
     # Reads the file with mods and removes extra lines
     mod_list = return_mod_list_from_file()
+    print(mod_list)
     os.chdir(mod_folder_name)
     # Downloads .zip files of the mods
     for modname in mod_list:
