@@ -58,7 +58,7 @@ def download_mod_from_steam_workshop(swd_filename, link_or_code_to_mod):
         result_code = subprocess.call([os.path.join("..", "resources", swd_filename), link_or_code_to_mod])
         if result_code == 0:
             return
-        print("The download has failed. Retrying again for the {}")
+        print("The download has failed. Retrying again for the {} time".format(x))
 
 def get_mod_full_name(steam_mod_id):
     steam_mod_url = "https://steamcommunity.com/sharedfiles/filedetails/?id={}".format(steam_mod_id)
@@ -86,11 +86,14 @@ def unpack_zip_files():
 def main():
     # Check if the "swd" (steam workshop downloader) file is present
     swd_filename = check_for_swd_file()
-    # creates a new mod folder to save mods in
-    mod_folder_name = create_mod_folder()
     # Reads the file with mods and removes extra lines
     mod_list = return_mod_list_from_file()
+    if len(mod_list) == 0:
+        print("The mod list is empty.")
+        sys.exit()
     print(mod_list)
+    # creates a new mod folder to save mods in
+    mod_folder_name = create_mod_folder()
     os.chdir(mod_folder_name)
     # Downloads .zip files of the mods
     for modname in mod_list:
