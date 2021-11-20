@@ -1,0 +1,4 @@
+# Put a list of mods to download here
+# All lines starting with # will be ignored
+# You can either put a link like: https://steamcommunity.com/sharedfiles/filedetails/?id=2655101811
+# Or you can just use the mod id: 2655101811
