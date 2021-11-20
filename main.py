@@ -1,7 +1,6 @@
-import sys, os, subprocess
-import string, zipfile
-# from bs4 import BeautifulSoup
-# import requests
+import sys, os, subprocess, re, string, zipfile
+from bs4 import BeautifulSoup
+import requests
 
 
 def check_for_swd_file():
@@ -56,22 +55,27 @@ def download_mod_from_steam_workshop(swd_filename, link_or_code_to_mod):
     subprocess.call(["pwd"])
     subprocess.call([os.path.join("..", "resources", swd_filename), link_or_code_to_mod])
 
-# def get_mod_full_name(steam_mod_url):
-#     if steam_mod_url.startswith("https://steamcommunity.com/sharedfiles/filedetails/?id="):
-#         page = requests.get(steam_mod_url)
-#         soup = BeautifulSoup(page.content, 'html.parser')
-#         name = soup.find("div", class_="workshopItemTitle")
+def get_mod_full_name(steam_mod_id):
+    steam_mod_url = "https://steamcommunity.com/sharedfiles/filedetails/?id={}".format(steam_mod_id)
+    page = requests.get(steam_mod_url)
+    soup = BeautifulSoup(page.content, 'html.parser')
+    # Get the name of the mod from steam main page
+    name = soup.find("div", class_="workshopItemTitle").text
+    name = name.replace(" ", "_")
+    name = "".join([c for c in name if re.match(r'\w', c)])
+    return name
 
 
 def unpack_zip_files():
     files_in_directory = os.listdir(".")
     # Remove all non .zip files from the list
     files_in_directory = list(filter(lambda x: x.endswith(".zip"), files_in_directory))
-    for filename in files_in_directory:
-        zf = zipfile.PyZipFile(filename)
+    for archive_filename in files_in_directory:
+        mod_full_name = get_mod_full_name(archive_filename)
+        zf = zipfile.PyZipFile(archive_filename)
         zf.extract("contents.pak")
-        os.rename("contents.pak", "{}.pak".format(filename[:-4]))
-        os.remove(filename)
+        os.rename("contents.pak", "{}-{}.pak".format(archive_filename[:-4], mod_full_name))
+        os.remove(archive_filename)
 
 
 def main():
