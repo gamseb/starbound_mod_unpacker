@@ -78,6 +78,7 @@ def download_mod_from_steam_workshop(swd_filename, link_or_code_to_mod):
         return
 
     # Download the mod
+    logging.info("Downloading: {}".format(mod_link))
     result_code = subprocess.call([os.path.join("..", "resources", swd_filename), mod_link])
     if result_code == 0:
         add_mod_id_to_completed_files_list(mod_link)
