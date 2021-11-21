@@ -141,8 +141,8 @@ def status_report(mod_list):
     with open("completed_files.txt", "r") as file:
         completed_mods_ids = list(map(str.strip, file.readlines()))
 
-    logging.error("mod_ids_list: {}".format(mod_ids_list))
-    logging.error("completed_mods_ids: {}".format(completed_mods_ids))
+    logging.debug("mod_ids_list: {}".format(mod_ids_list))
+    logging.debug("completed_mods_ids: {}".format(completed_mods_ids))
     for mod_id in mod_ids_list:
         if mod_id not in completed_mods_ids:
             missing_files.append(mod_id)
