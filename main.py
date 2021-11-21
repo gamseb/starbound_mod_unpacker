@@ -138,6 +138,9 @@ def remove_prefix(text, prefix):
 def status_report(mod_list):
     missing_files = []
     mod_ids_list = [remove_prefix(mod, "https://steamcommunity.com/sharedfiles/filedetails/?id=") for mod in mod_list]
+    if not os.path.exists("completed_files.txt"):
+        logging.warning("The completed_files.txt file does not exist")
+        return
     with open("completed_files.txt", "r") as file:
         completed_mods_ids = list(map(str.strip, file.readlines()))
 
