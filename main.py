@@ -60,7 +60,7 @@ def return_mod_list_from_file(filepath):
             lines = list(filter(lambda x: (x[0] != "#") and (x[0] not in string.whitespace), lines))
             lines = [line.strip() for line in lines]
     except FileNotFoundError:
-        logging.error("The file specified does not exist.")
+        logging.error("No list of mods has been provided. Either you can create a file with the name 'mod_list.txt' or you can specify one with the -i flag")
         sys.exit()
     if len(lines) == 0:
         logging.error("The mod list file is empty. Please update the file and try again")
