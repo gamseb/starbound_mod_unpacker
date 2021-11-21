@@ -5,6 +5,7 @@ import string
 import subprocess
 import sys
 import zipfile
+import contextlib
 
 import requests
 import argparse
@@ -36,40 +37,58 @@ def check_for_swd_file():
             sys.exit()
 
 
-def create_mod_folder():
-    folder_name = "mods1"
-    while True:
-        if os.path.exists(folder_name):
-            iteration_number = str(int(folder_name[4:]) + 1)
-            folder_name = folder_name[:4] + iteration_number
-            continue
-        os.mkdir(folder_name)
-        break
+def create_mod_folder(folder_name=None):
+    if folder_name is None:
+        folder_name = "mods1"
+        while True:
+            if os.path.exists(folder_name):
+                iteration_number = str(int(folder_name[4:]) + 1)
+                folder_name = folder_name[:4] + iteration_number
+                continue
+            os.mkdir(folder_name)
+            break
+    else:
+        if not os.path.exists(folder_name):
+            os.mkdir(folder_name)
     return folder_name
 
 
-def return_mod_list_from_file():
-    with open("mod_list.txt", "r") as file:
-        lines = file.readlines()
-        lines = list(filter(lambda x: (x[0] != "#") and (x[0] not in string.whitespace), lines))
-        lines = [line.strip() for line in lines]
-        return lines
+def return_mod_list_from_file(filepath):
+    try:
+        with open(filepath, "r") as file:
+            lines = file.readlines()
+            lines = list(filter(lambda x: (x[0] != "#") and (x[0] not in string.whitespace), lines))
+            lines = [line.strip() for line in lines]
+    except FileNotFoundError:
+        logging.error("The file specified does not exist.")
+        sys.exit()
+    if len(lines) == 0:
+        logging.error("The mod list file is empty. Please update the file and try again")
+        sys.exit()
+    return lines
 
 
 def download_mod_from_steam_workshop(swd_filename, link_or_code_to_mod):
     if link_or_code_to_mod.startswith("https://steamcommunity.com/sharedfiles/filedetails/?id="):
-        pass
+        mod_link = link_or_code_to_mod
     elif link_or_code_to_mod.isdecimal():
-        link_or_code_to_mod = "https://steamcommunity.com/sharedfiles/filedetails/?id=" + link_or_code_to_mod
+        mod_link = "https://steamcommunity.com/sharedfiles/filedetails/?id=" + link_or_code_to_mod
     else:
-        print("FAILED TO PARSE: {}".format(link_or_code_to_mod))
+        logging.error("FAILED TO PARSE: {}".format(link_or_code_to_mod))
         return
-    # subprocess.call(["pwd"])
-    for x in range(5):
-        result_code = subprocess.call([os.path.join("..", "resources", swd_filename), link_or_code_to_mod])
-        if result_code == 0:
-            return
-        print("The download has failed. Retrying again for the {} time".format(x))
+
+    # Download the mod
+    result_code = subprocess.call([os.path.join("..", "resources", swd_filename), mod_link])
+    if result_code == 0:
+        add_mod_id_to_completed_files_list(mod_link)
+        return
+    else:
+        logging.warning("The download has failed")
+        # Remove the incomplete file if present
+        zip_file_name = "{}.zip".format(
+            remove_prefix(mod_link, "https://steamcommunity.com/sharedfiles/filedetails/?id="))
+        with contextlib.suppress(FileNotFoundError):
+            os.remove(zip_file_name)
 
 
 def get_mod_full_name(steam_mod_id):
@@ -89,46 +108,94 @@ def unpack_zip_files():
     files_in_directory = list(filter(lambda x: x.endswith(".zip"), files_in_directory))
     for archive_filename in files_in_directory:
         mod_full_name = get_mod_full_name(archive_filename)
+
         zf = zipfile.PyZipFile(archive_filename)
         zf.extract("contents.pak")
         os.rename("contents.pak", "{}-{}.pak".format(archive_filename[:-4], mod_full_name))
         os.remove(archive_filename)
 
 
-def main():
+def add_mod_id_to_completed_files_list(mod):
+    mod = remove_prefix(mod, "https://steamcommunity.com/sharedfiles/filedetails/?id=")
+    with open("completed_files.txt", "a") as file:
+        file.write(mod + "\n")
+
+
+def is_on_completed_files_list(mod):
+    mod = remove_prefix(mod, "https://steamcommunity.com/sharedfiles/filedetails/?id=")
+    if not os.path.exists("completed_files.txt"):
+        return False
+    with open("completed_files.txt", "r") as file:
+        completed_files_ids = file.readlines()
+    return True if mod in completed_files_ids else False
+
+
+def remove_prefix(text, prefix):
+    """You can remove this function in python 3.9.0"""
+    return text[len(prefix):] if text.startswith(prefix) else text
+
+
+def status_report(mod_list):
+    missing_files = []
+    mod_ids_list = [remove_prefix(mod, "https://steamcommunity.com/sharedfiles/filedetails/?id=") for mod in mod_list]
+    with open("completed_files.txt", "r") as file:
+        completed_mods_ids = list(map(str.strip, file.readlines()))
+
+    logging.error("mod_ids_list: {}".format(mod_ids_list))
+    logging.error("completed_mods_ids: {}".format(completed_mods_ids))
+    for mod_id in mod_ids_list:
+        if mod_id not in completed_mods_ids:
+            missing_files.append(mod_id)
+
+    if len(missing_files) == 0:
+        logging.info("All files have been validated. Everything is OK.")
+    else:
+        logging.info("Some files are missing: ")
+        for id in missing_files:
+            logging.info(id)
+
+
+def main(args):
     # Check if the "swd" (steam workshop downloader) file is present
     swd_filename = check_for_swd_file()
+    logging.debug("SWD filename: {}".format(swd_filename))
     # Reads the file with mods and removes extra lines
-    mod_list = return_mod_list_from_file()
-    if len(mod_list) == 0:
-        print("The mod list is empty.")
-        sys.exit()
-    print(mod_list)
+    if args["input"]:
+        mod_list = return_mod_list_from_file(args["input"])
+    else:
+        mod_list = return_mod_list_from_file("mod_list.txt")
+    logging.debug("mod_list: {}".format(mod_list))
     # creates a new mod folder to save mods in
-    mod_folder_name = create_mod_folder()
+    if args["output"]:
+        mod_folder_name = create_mod_folder(args["output"])
+    else:
+        mod_folder_name = create_mod_folder()
     os.chdir(mod_folder_name)
-    # Downloads .zip files of the mods
+    # Download .zip files of the mods
     for modname in mod_list:
+        if is_on_completed_files_list(modname):
+            continue
         download_mod_from_steam_workshop(swd_filename, modname)
     unpack_zip_files()
+    # Compare the mod list with the completed files
+    status_report(mod_list)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Automatic downloader for Starbound mods')
-    parser.add_argument("-c", "--continue", action="store_true", help="Continue an unfinished download") #TODO
-    parser.add_argument("-o", "--output", help="Specifies the output folder") #TODO
-    parser.add_argument("-i", "--input", help="Specifies the input mod list file") #TODO
-    parser.add_argument("-v", "--verbose", action="store_true", help="Turns on verbose mode") #TODO
+    # parser.add_argument("-c", "--continue", action="store_true", help="Continue an unfinished download")
+    parser.add_argument("-o", "--output", help="Specifies the output folder")
+    parser.add_argument("-i", "--input", help="Specifies the input mod list file")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Turns on verbose mode")
 
     args = vars(parser.parse_args())
     if args["verbose"]:
         logging.basicConfig(level="DEBUG")
     else:
-        logging.basicConfig(level="WARNING")
+        logging.basicConfig(level="INFO")
 
     logging.debug("Arguments: {}".format(args))
 
-
+    main(args)
 
     # main()
-
