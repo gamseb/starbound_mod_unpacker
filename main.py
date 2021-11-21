@@ -156,6 +156,7 @@ def status_report(mod_list):
 
 
 def main(args):
+
     # Check if the "swd" (steam workshop downloader) file is present
     swd_filename = check_for_swd_file()
     logging.debug("SWD filename: {}".format(swd_filename))
@@ -165,25 +166,27 @@ def main(args):
     else:
         mod_list = return_mod_list_from_file("mod_list.txt")
     logging.debug("mod_list: {}".format(mod_list))
-    # creates a new mod folder to save mods in
-    if args["output"]:
-        mod_folder_name = create_mod_folder(args["output"])
-    else:
-        mod_folder_name = create_mod_folder()
-    os.chdir(mod_folder_name)
-    # Download .zip files of the mods
-    for modname in mod_list:
-        if is_on_completed_files_list(modname):
-            continue
-        download_mod_from_steam_workshop(swd_filename, modname)
-    unpack_zip_files()
-    # Compare the mod list with the completed files
+
+    if not args["check"]:
+        # creates a new mod folder to save mods in
+        if args["output"]:
+            mod_folder_name = create_mod_folder(args["output"])
+        else:
+            mod_folder_name = create_mod_folder()
+        os.chdir(mod_folder_name)
+        # Download .zip files of the mods
+        for modname in mod_list:
+            if is_on_completed_files_list(modname):
+                continue
+            download_mod_from_steam_workshop(swd_filename, modname)
+        unpack_zip_files()
+        # Compare the mod list with the completed files
     status_report(mod_list)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Automatic downloader for Starbound mods')
-    # parser.add_argument("-c", "--continue", action="store_true", help="Continue an unfinished download")
+    parser.add_argument("-c", "--check", action="store_true", help="Check if all mods are downloaded without downloading new ones")
     parser.add_argument("-o", "--output", help="Specifies the output folder")
     parser.add_argument("-i", "--input", help="Specifies the input mod list file")
     parser.add_argument("-v", "--verbose", action="store_true", help="Turns on verbose mode")
@@ -197,5 +200,3 @@ if __name__ == "__main__":
     logging.debug("Arguments: {}".format(args))
 
     main(args)
-
-    # main()
