@@ -1,6 +1,14 @@
-import sys, os, subprocess, re, string, zipfile
-from bs4 import BeautifulSoup
+import logging
+import os
+import re
+import string
+import subprocess
+import sys
+import zipfile
+
 import requests
+import argparse
+from bs4 import BeautifulSoup
 
 
 def check_for_swd_file():
@@ -27,6 +35,7 @@ def check_for_swd_file():
     """)
             sys.exit()
 
+
 def create_mod_folder():
     folder_name = "mods1"
     while True:
@@ -38,12 +47,14 @@ def create_mod_folder():
         break
     return folder_name
 
+
 def return_mod_list_from_file():
     with open("mod_list.txt", "r") as file:
         lines = file.readlines()
         lines = list(filter(lambda x: (x[0] != "#") and (x[0] not in string.whitespace), lines))
         lines = [line.strip() for line in lines]
         return lines
+
 
 def download_mod_from_steam_workshop(swd_filename, link_or_code_to_mod):
     if link_or_code_to_mod.startswith("https://steamcommunity.com/sharedfiles/filedetails/?id="):
@@ -59,6 +70,7 @@ def download_mod_from_steam_workshop(swd_filename, link_or_code_to_mod):
         if result_code == 0:
             return
         print("The download has failed. Retrying again for the {} time".format(x))
+
 
 def get_mod_full_name(steam_mod_id):
     steam_mod_url = "https://steamcommunity.com/sharedfiles/filedetails/?id={}".format(steam_mod_id)
@@ -102,4 +114,21 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description='Automatic downloader for Starbound mods')
+    parser.add_argument("-c", "--continue", action="store_true", help="Continue an unfinished download") #TODO
+    parser.add_argument("-o", "--output", help="Specifies the output folder") #TODO
+    parser.add_argument("-i", "--input", help="Specifies the input mod list file") #TODO
+    parser.add_argument("-v", "--verbose", action="store_true", help="Turns on verbose mode") #TODO
+
+    args = vars(parser.parse_args())
+    if args["verbose"]:
+        logging.basicConfig(level="DEBUG")
+    else:
+        logging.basicConfig(level="WARNING")
+
+    logging.debug("Arguments: {}".format(args))
+
+
+
+    # main()
+
