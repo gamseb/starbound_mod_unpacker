@@ -109,11 +109,15 @@ def unpack_zip_files():
     files_in_directory = list(filter(lambda x: x.endswith(".zip"), files_in_directory))
     for archive_filename in files_in_directory:
         mod_full_name = get_mod_full_name(archive_filename)
-
-        zf = zipfile.PyZipFile(archive_filename)
-        zf.extract("contents.pak")
-        os.rename("contents.pak", "{}-{}.pak".format(archive_filename[:-4], mod_full_name))
-        os.remove(archive_filename)
+        pak_file_full_name = "{}-{}.pak".format(archive_filename[:-4], mod_full_name)
+        if not os.path.exists(pak_file_full_name):
+            zf = zipfile.PyZipFile(archive_filename)
+            zf.extract("contents.pak")
+            os.rename("contents.pak", pak_file_full_name)
+        try:
+            os.remove(archive_filename)
+        except:
+            logging.warning("Failed to remove {} archive file. Skipping".format(archive_filename))
 
 
 def add_mod_id_to_completed_files_list(mod):
