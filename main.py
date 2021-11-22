@@ -128,6 +128,7 @@ def is_on_completed_files_list(mod):
         return False
     with open("completed_files.txt", "r") as file:
         completed_files_ids = file.readlines()
+        completed_files_ids = [line.strip() for line in completed_files_ids]
     return True if mod in completed_files_ids else False
 
 
@@ -182,6 +183,8 @@ def main(args):
         for modname in mod_list:
             if not is_on_completed_files_list(modname):
                 download_mod_from_steam_workshop(swd_filename, modname)
+            else:
+                logging.info("Skipping: {}".format(modname))
         unpack_zip_files()
         # Compare the mod list with the completed files
     status_report(mod_list)
