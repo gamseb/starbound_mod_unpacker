@@ -27,8 +27,6 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=2280798282
 https://steamcommunity.com/sharedfiles/filedetails/?id=2431875552
 # Anom's Outpost Overhaul
 https://steamcommunity.com/sharedfiles/filedetails/?id=2468903056
-# Customizable Shuttlecraft
-https://steamcommunity.com/sharedfiles/filedetails/?id=1102394541
 # Scyphojel, Space Jellyfish!
 https://steamcommunity.com/sharedfiles/filedetails/?id=2655101811
 # Arcana
