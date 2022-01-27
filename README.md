@@ -31,6 +31,8 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=2468903056
 https://steamcommunity.com/sharedfiles/filedetails/?id=2655101811
 # Arcana
 https://steamcommunity.com/sharedfiles/filedetails/?id=2359135864
+# Macrochips
+https://steamcommunity.com/sharedfiles/filedetails/?id=729444820
 
 
 #######
@@ -62,6 +64,8 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=933536396
 https://steamcommunity.com/sharedfiles/filedetails/?id=2375270402
 # Elithian Races Mod: Frackin Universes Patch
 https://steamcommunity.com/sharedfiles/filedetails/?id=1429652829
+# Macrochip fix
+https://steamcommunity.com/sharedfiles/filedetails/?id=1923815089
 
 
 ######
