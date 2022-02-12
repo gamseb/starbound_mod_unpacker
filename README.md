@@ -95,6 +95,9 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=729524482
 https://steamcommunity.com/sharedfiles/filedetails/?id=2478120319
 # Planet navigation tools
 https://steamcommunity.com/sharedfiles/filedetails/?id=2613620322
+# bk3k's Inventory: extended inventory 
+https://steamcommunity.com/sharedfiles/filedetails/?id=882900100
+
 
 
 ######
