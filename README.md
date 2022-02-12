@@ -66,6 +66,8 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=2375270402
 https://steamcommunity.com/sharedfiles/filedetails/?id=1429652829
 # Macrochip fix
 https://steamcommunity.com/sharedfiles/filedetails/?id=1923815089
+# bk3k's Inventory Reskin
+https://steamcommunity.com/sharedfiles/filedetails/?id=1150594604
 
 
 ######
