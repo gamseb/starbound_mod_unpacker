@@ -99,7 +99,8 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=2478120319
 https://steamcommunity.com/sharedfiles/filedetails/?id=2613620322
 # bk3k's Inventory: extended inventory 
 https://steamcommunity.com/sharedfiles/filedetails/?id=882900100
-
+# Food Stack
+https://steamcommunity.com/sharedfiles/filedetails/?id=729427436
 
 
 ######
@@ -111,4 +112,3 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=729773633
 https://steamcommunity.com/sharedfiles/filedetails/?id=729492703
 # Outpost Music Replacer: Tranquility Base
 https://steamcommunity.com/sharedfiles/filedetails/?id=1826459917
-```
