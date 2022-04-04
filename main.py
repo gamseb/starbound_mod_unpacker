@@ -16,6 +16,8 @@ def check_for_swd_file():
     if sys.platform == "linux" or sys.platform == "linux2":  # linux
         if os.path.exists(os.path.join("resources", "swd")):
             return "swd"
+        elif os.path.exists(os.path.join("resources", "swd-linux-386")):
+            return "swd-linux-386"
         else:
             print("""
     Please go to this link: https://github.com/SegoCode/swd/releases and download the latest release of swd. 
@@ -28,6 +30,8 @@ def check_for_swd_file():
     elif sys.platform == "win32":  # Windows...
         if os.path.exists(os.path.join("resources", "swd.exe")):
             return "swd.exe"
+        elif os.path.exists(os.path.join("resources", "swd-windows-386.exe")):
+            return "swd-windows-386.exe"
         else:
             print("""
     Please go to this link: https://github.com/SegoCode/swd/releases and download the latest release of swd. 
