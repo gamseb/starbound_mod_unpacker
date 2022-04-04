@@ -1,7 +1,34 @@
-This is a simple Starbound mod downloader
+This is a simple Starbound mod downloader and unpacker
+# Requirements:
+- Python 3
+- [Beautiful soup 4](https://beautiful-soup-4.readthedocs.io/en/latest/#installing-beautiful-soup)
 
-#TODO: Add an introduction
-#TODO: Add instructions
+# How to use: 
+1. Download or clone the repository
+2. Go to https://github.com/SegoCode/swd/releases and download the latest release for your operating system (Usually its either swd-linux-386 or swd-windows-386.exe)
+3. Put the file into the **resources/** folder
+> If on Linux, remember to add the correct permissions to the **swd** binary
+4. Make sure you have Python 3 installed
+5. Install Beautiful soup 4 by running the following command in the terminal:
+> $ python3 -m pip install bs4
+6. Write your mod list into the **mod_list.txt** file
+7. run **main.py** with the following command in the terminal and wait for all the mods to finish downloading:
+> $ python3 main.py
+
+# Options
+
+Check if all mods are downloaded without downloading new ones. Needs path to the completed_files.txt file
+> $ python3 main -c 
+ 
+Specifies the output folder (can be used to resume downloads or update colections with new mods)
+> $ python main -o (folder name)
+  
+Specifies the input mod list file
+> $ python main -i (txt file)
+
+Turns on verbose mode
+> $ python main -v
+
 
 # Mod list example: 
 
