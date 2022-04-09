@@ -57,7 +57,7 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=2468903056
 # Scyphojel, Space Jellyfish!
 https://steamcommunity.com/sharedfiles/filedetails/?id=2655101811
 # Arcana
-https://steamcommunity.com/sharedfiles/filedetails/?id=2359135864
+# https://steamcommunity.com/sharedfiles/filedetails/?id=2359135864
 # Macrochips
 https://steamcommunity.com/sharedfiles/filedetails/?id=729444820
 
@@ -128,6 +128,8 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=2613620322
 https://steamcommunity.com/sharedfiles/filedetails/?id=882900100
 # Food Stack
 https://steamcommunity.com/sharedfiles/filedetails/?id=729427436
+# Disabled items drop in survival
+https://steamcommunity.com/sharedfiles/filedetails/?id=729746228
 
 
 ######
