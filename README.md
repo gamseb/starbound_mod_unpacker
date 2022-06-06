@@ -130,6 +130,10 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=882900100
 https://steamcommunity.com/sharedfiles/filedetails/?id=729427436
 # Disabled items drop in survival
 https://steamcommunity.com/sharedfiles/filedetails/?id=729746228
+# Improved Food Descriptions
+https://steamcommunity.com/sharedfiles/filedetails/?id=731354142
+# Instant crafting
+https://steamcommunity.com/sharedfiles/filedetails/?id=729427744
 
 
 ######
