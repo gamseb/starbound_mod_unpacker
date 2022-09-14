@@ -134,6 +134,8 @@ https://steamcommunity.com/sharedfiles/filedetails/?id=729746228
 https://steamcommunity.com/sharedfiles/filedetails/?id=731354142
 # Instant crafting
 https://steamcommunity.com/sharedfiles/filedetails/?id=729427744
+# Better platform falling
+https://steamcommunity.com/sharedfiles/filedetails/?id=2836659083
 
 
 ######
