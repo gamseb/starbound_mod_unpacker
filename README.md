@@ -1,3 +1,7 @@
+# warning 28/05/2022 - doesn't work anymore. This repo is no longer maintained, API has been shutdown.
+
+--- 
+
 This is a simple Starbound mod downloader and unpacker
 # Requirements:
 - Python 3
